@@ -1,0 +1,1 @@
+./build/npm.sh install

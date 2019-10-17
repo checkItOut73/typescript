@@ -1,0 +1,4 @@
+/node_modules
+/dist
+/tests/__coverage_report__
+package-lock.json
