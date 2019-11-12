@@ -1,50 +1,75 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const TSCONFIG_PATH = path.resolve(__dirname, 'tsconfig.json');
 const { compilerOptions } = require(TSCONFIG_PATH);
 
 module.exports = {
-    entry: './src/browser/index.tsx',
-    mode: 'development',
-    devServer: {
-        host: '0.0.0.0',
-        port: 8080,
-        disableHostCheck: true,
-        stats: {
-            children: false,
-            maxModules: 0
+    entry: ['webpack-hot-middleware/client', './src/browser/index.tsx'],
+    output: {
+        path: path.resolve(process.cwd(), 'dist/browser'),
+        publicPath: 'http://docker-vm:8080/',
+        filename: 'bundle.js',
+        hotUpdateChunkFilename: 'hot_update/[id].[hash].hot-update.js',
+        hotUpdateMainFilename: 'hot_update/[hash].hot-update.json'
+    },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js', '.jsx'],
+        alias: {
+            'react-dom': '@hot-loader/react-dom',
+            ...compilerOptionsToResolveAliasMapper(compilerOptions)
         }
     },
+    mode: 'development',
+    devtool: 'eval-source-map',
     watchOptions: {
-        poll: 1000
+        poll: 500
     },
     module: {
         rules: [
             {
-                test: /\.tsx?$/,
+                test: /\.(j|t)s(x)?$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: 'ts-loader',
+                    loader: 'babel-loader',
                     options: {
-                        configFile: TSCONFIG_PATH
+                        cacheDirectory: true,
+                        babelrc: false,
+                        presets: [
+                            [
+                                '@babel/preset-env',
+                                { targets: { browsers: 'last 2 versions' } }
+                            ],
+                            '@babel/preset-typescript',
+                            '@babel/preset-react'
+                        ],
+                        plugins: [
+                            [
+                                '@babel/plugin-proposal-decorators',
+                                { legacy: true }
+                            ],
+                            [
+                                '@babel/plugin-proposal-class-properties',
+                                { loose: true }
+                            ],
+                            'react-hot-loader/babel'
+                        ]
                     }
                 }
             }
         ]
     },
-    resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
-        alias: compilerOptionsToResolveAliasMapper(compilerOptions)
-    },
-    output: {
-        filename: 'bundle.js',
-        path: path.resolve(process.cwd(), 'dist/browser')
-    },
     plugins: [
+        new webpack.HotModuleReplacementPlugin(),
+        new ForkTsCheckerWebpackPlugin({
+            tsconfig: TSCONFIG_PATH
+        }),
         new HtmlWebpackPlugin({
             title: 'Editor',
-            template: 'src/browser/index.html'
+            template: 'src/browser/templates/index.html',
+            filename: 'templates/index.html'
         })
     ]
 };

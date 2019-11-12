@@ -1,0 +1,11 @@
+{
+  "verbose": true,
+  "execMap": {
+    "js": "node"
+  },
+  "watch": ["dist/server/"],
+  "legacyWatch": true,
+  "env": {
+    "NODE_ENV": "development"
+  }
+}

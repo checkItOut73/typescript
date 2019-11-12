@@ -5,36 +5,44 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --config build/configs/jest.config.js",
-    "build": "npm run build:server && npm run build:browser",
-    "build:server": "tsc --project build/configs/tsconfig.json",
     "build:browser": "webpack --config build/configs/webpack.config.js",
+    "build:server": "tsc --project build/configs/tsconfig.json",
     "watch:server": "npm run build:server -- --watch",
-    "watch:browser": "npm run build:browser -- --watch",
     "format": "prettier --write \"{./**/*.{json,js,jsx,ts,tsx},.prettierrc}\" --config build/configs/.prettierrc --ignore-path build/configs/.prettierignore",
-    "start": "node ./dist/server/index.js"
+    "start": "node ./dist/server/index.js",
+    "start:dev": "nodemon --config build/configs/nodemon.json ./dist/server/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "fastify": "^2.9.0",
     "fastify-static": "^2.5.0",
-    "nodemon": "^1.19.3",
     "react": "^16.10.2",
     "react-dom": "^16.10.2"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-decorators": "^7.6.0",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-react": "^7.6.3",
+    "@babel/preset-typescript": "^7.6.0",
+    "@hot-loader/react-dom": "^16.10.2",
     "@types/jest": "^24.0.18",
     "@types/node": "^12.7.11",
     "@types/react": "^16.9.5",
     "@types/react-dom": "^16.9.2",
+    "babel-loader": "^8.0.6",
+    "fork-ts-checker-webpack-plugin": "^2.0.0",
     "html-webpack-plugin": "^3.2.0",
     "jest": "^24.9.0",
+    "nodemon": "^1.19.4",
     "prettier": "^1.18.2",
+    "react-hot-loader": "^4.12.15",
     "ts-jest": "^24.1.0",
-    "ts-loader": "^6.2.0",
     "typescript": "^3.6.3",
     "webpack": "^4.41.0",
     "webpack-cli": "^3.3.9",
-    "webpack-dev-server": "^3.8.2"
+    "webpack-dev-middleware": "^3.7.2",
+    "webpack-hot-middleware": "^2.25.0"
   }
 }
