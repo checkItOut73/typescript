@@ -1,7 +1,6 @@
 {
   "name": "typescript-skeleton",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "jest --config build/configs/jest.config.js",
@@ -12,8 +11,7 @@
     "start": "node ./dist/server/index.js",
     "start:dev": "nodemon --config build/configs/nodemon.json ./dist/server/index.js"
   },
-  "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "fastify": "^2.9.0",
     "fastify-static": "^2.5.0",
