@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
@@ -7,26 +6,16 @@ const TSCONFIG_PATH = path.resolve(__dirname, 'tsconfig.json');
 const { compilerOptions } = require(TSCONFIG_PATH);
 
 module.exports = {
-    entry: ['webpack-hot-middleware/client', './src/browser/index.tsx'],
+    entry: ['./src/browser/index.tsx'],
     output: {
         path: path.resolve(process.cwd(), 'dist/browser'),
-        publicPath: 'http://docker-vm:8080/',
-        filename: 'bundle.js',
-        hotUpdateChunkFilename: 'hot_update/[id].[hash].hot-update.js',
-        hotUpdateMainFilename: 'hot_update/[hash].hot-update.json'
+        filename: 'bundle.js'
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.jsx'],
-        alias: {
-            'react-dom': '@hot-loader/react-dom',
-            ...compilerOptionsToResolveAliasMapper(compilerOptions)
-        }
+        alias: compilerOptionsToResolveAliasMapper(compilerOptions)
     },
-    mode: 'development',
-    devtool: 'eval-source-map',
-    watchOptions: {
-        poll: 500
-    },
+    mode: 'production',
     module: {
         rules: [
             {
@@ -62,14 +51,13 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin(),
         new ForkTsCheckerWebpackPlugin({
             tsconfig: TSCONFIG_PATH
         }),
         new HtmlWebpackPlugin({
-            title: 'Editor',
-            template: 'src/browser/templates/index.html',
-            filename: 'templates/index.html'
+            title: '#PROJECT_NAME',
+            template: 'src/browser/index.html',
+            filename: 'index.html'
         })
     ]
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { hot } from 'react-hot-loader/root';
-import Test from '@src/browser/Test';
+import Test from '@components/Test';
 
 const App = () => (
     <h1>
