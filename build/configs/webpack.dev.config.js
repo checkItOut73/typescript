@@ -3,25 +3,15 @@ const webpackConfig = require('./webpack.config');
 const mergeOptions = require('merge-options');
 
 const config = {
-    entry: ['webpack-hot-middleware/client'],
+    entry: ['./build/configs/webpack.dev.browser.reloading'],
     output: {
-        publicPath: 'http://docker-vm:8080/',
-        hotUpdateChunkFilename: 'hot_update/[id].[hash].hot-update.js',
-        hotUpdateMainFilename: 'hot_update/[hash].hot-update.json'
-    },
-    resolve: {
-        alias: {
-            'react-dom': '@hot-loader/react-dom'
-        }
+        publicPath: 'http://docker-vm:8080/'
     },
     mode: 'development',
     devtool: 'eval-source-map',
     watchOptions: {
         poll: 500
-    },
-    plugins: [
-        new webpack.HotModuleReplacementPlugin()
-    ]
+    }
 };
 
 module.exports = mergeOptions.call({ concatArrays: true }, webpackConfig, config);

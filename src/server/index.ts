@@ -3,8 +3,8 @@ import fastify from 'fastify';
 import fastifyStatic from 'fastify-static';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
 import webpackDevConfig from '../../build/configs/webpack.dev.config.js';
+import WebSocket from 'ws';
 
 const webpackCompiler = webpack(webpackDevConfig);
 
@@ -24,7 +24,12 @@ if ('development' === process.env.NODE_ENV) {
         })
     );
 
-    server.use(webpackHotMiddleware(webpackCompiler));
+    const webSocketServer = new WebSocket.Server({ server: server.server });
+    webSocketServer.on('connection', (webSocket) => {
+        webpackCompiler.plugin('done', () => {
+           webSocket.send('compilationDone');
+        });
+    });
 }
 
 const start = async () => {

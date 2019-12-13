@@ -1,6 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const TSCONFIG_PATH = path.resolve(__dirname, 'tsconfig.json');
 const { compilerOptions } = require(TSCONFIG_PATH);
@@ -19,41 +18,18 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.(j|t)s(x)?$/,
+                test: /\.tsx?$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: 'babel-loader',
+                    loader: 'ts-loader',
                     options: {
-                        cacheDirectory: true,
-                        babelrc: false,
-                        presets: [
-                            [
-                                '@babel/preset-env',
-                                { targets: { browsers: 'last 2 versions' } }
-                            ],
-                            '@babel/preset-typescript',
-                            '@babel/preset-react'
-                        ],
-                        plugins: [
-                            [
-                                '@babel/plugin-proposal-decorators',
-                                { legacy: true }
-                            ],
-                            [
-                                '@babel/plugin-proposal-class-properties',
-                                { loose: true }
-                            ],
-                            'react-hot-loader/babel'
-                        ]
+                        configFile: TSCONFIG_PATH
                     }
                 }
             }
         ]
     },
     plugins: [
-        new ForkTsCheckerWebpackPlugin({
-            tsconfig: TSCONFIG_PATH
-        }),
         new HtmlWebpackPlugin({
             template: 'src/browser/index.html',
             filename: 'index.html'
