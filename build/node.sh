@@ -3,4 +3,4 @@ docker run \
     --interactive \
     --volume /$(pwd)://var/www/html \
     --workdir //var/www/html \
-    node:10.16.3 $@
+    node:12.13.0 $@

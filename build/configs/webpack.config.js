@@ -55,7 +55,6 @@ module.exports = {
             tsconfig: TSCONFIG_PATH
         }),
         new HtmlWebpackPlugin({
-            title: '#PROJECT_NAME',
             template: 'src/browser/index.html',
             filename: 'index.html'
         })
