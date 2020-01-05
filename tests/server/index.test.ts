@@ -18,12 +18,15 @@ const webpackDevConfig = {
     watchOptions: 'watchOptions'
 };
 
+const moduleAliasRegisterSpy = jest.fn();
+
 jest.mock('fastify', () => () => fastifyServerMock);
 jest.mock('fastify-static', () => fastifyStaticMock);
 jest.mock('webpack', () => (webpackConfig) => webpackConfig);
 jest.mock('webpack-dev-middleware', () => webpackDevMiddlewareMock);
 jest.mock('webpack-hot-middleware', () => webpackHotMiddlewareMock);
 jest.mock('@configs/webpack.dev.config.js', () => webpackDevConfig);
+jest.mock('module-alias/register', () => moduleAliasRegisterSpy());
 
 describe('index | ', () => {
     function requireModule() {
@@ -32,6 +35,12 @@ describe('index | ', () => {
 
     afterEach(() => {
         jest.resetModules();
+    });
+
+    test('module-alias/register is loaded', () => {
+        requireModule();
+
+        expect(moduleAliasRegisterSpy).toHaveBeenCalled();
     });
 
     test('fastifyStatic is registered on the server', () => {

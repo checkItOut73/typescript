@@ -8,6 +8,7 @@ const { compilerOptions } = require(TSCONFIG_PATH);
 
 module.exports = {
     rootDir: process.cwd(),
+    clearMocks: true,
     transform: {
         '^.+\\.tsx?$': 'ts-jest'
     },

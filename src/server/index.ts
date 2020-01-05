@@ -1,3 +1,5 @@
+import 'module-alias/register';
+
 import path from 'path';
 import fastify from 'fastify';
 import fastifyStatic from 'fastify-static';
