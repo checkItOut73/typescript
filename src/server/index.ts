@@ -4,7 +4,7 @@ import fastifyStatic from 'fastify-static';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
-import webpackDevConfig from '../../build/configs/webpack.dev.config.js';
+import webpackDevConfig from '@configs/webpack.dev.config.js';
 
 const webpackCompiler = webpack(webpackDevConfig);
 
@@ -30,9 +30,8 @@ if ('development' === process.env.NODE_ENV) {
 const start = async () => {
     try {
         await server.listen(8080, '0.0.0.0');
-    } catch (err) {
-        server.log.error(err);
-        process.exit(1);
+    } catch (error) {
+        server.log.error(error);
     }
 };
 

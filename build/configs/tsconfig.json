@@ -9,7 +9,10 @@
     "baseUrl": "../../",
     "paths": {
       "@src/*": ["src/*"],
-      "@components/*": ["src/browser/components/*"]
+      "@browser/*": ["src/browser/*"],
+      "@server/*": ["src/server/*"],
+      "@components/*": ["src/browser/components/*"],
+      "@configs/*": ["build/configs/*"]
     }
   }
 }
