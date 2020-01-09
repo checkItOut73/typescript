@@ -1,6 +1,7 @@
-import fastifyServerMock from './__mocks__/fastifyServerMock';
+import fastify from 'fastify';
 import path from 'path';
 
+const fastifyServerMock = fastify();
 const fastifyStaticMock = {};
 const webpackDevMiddlewareMock = (webpackCompiler, options) => ({
     middleware: 'webpack-dev-middleware',
@@ -20,7 +21,7 @@ const webpackDevConfig = {
 
 const moduleAliasRegisterSpy = jest.fn();
 
-jest.mock('fastify', () => () => fastifyServerMock);
+jest.mock('fastify');
 jest.mock('fastify-static', () => fastifyStaticMock);
 jest.mock('webpack', () => (webpackConfig) => webpackConfig);
 jest.mock('webpack-dev-middleware', () => webpackDevMiddlewareMock);
@@ -30,12 +31,10 @@ jest.mock('module-alias/register', () => moduleAliasRegisterSpy());
 
 describe('index | ', () => {
     function requireModule() {
-        require('@server/index.ts');
+        jest.isolateModules(() => {
+            require('@server/index.ts');
+        });
     }
-
-    afterEach(() => {
-        jest.resetModules();
-    });
 
     test('module-alias/register is loaded', () => {
         requireModule();
@@ -61,6 +60,7 @@ describe('index | ', () => {
 
         describe('if listen resolves ', () => {
             beforeEach(() => {
+                // @ts-ignore
                 fastifyServerMock.listen.mockReturnValue(Promise.resolve());
             });
 
@@ -75,6 +75,7 @@ describe('index | ', () => {
             const error = new Error('listen error');
 
             beforeEach(() => {
+                // @ts-ignore
                 fastifyServerMock.listen.mockReturnValue(Promise.reject(error));
             });
 

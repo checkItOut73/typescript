@@ -1,4 +1,4 @@
-export default {
+const fastifyServerMock = {
     register: jest.fn(),
     listen: jest.fn(),
     use: jest.fn(),
@@ -6,3 +6,5 @@ export default {
         error: jest.fn()
     }
 };
+
+export default () => fastifyServerMock;
