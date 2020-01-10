@@ -1,9 +1,11 @@
+import 'module-alias/register';
+
 import path from 'path';
 import fastify from 'fastify';
 import fastifyStatic from 'fastify-static';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackDevConfig from '../../build/configs/webpack.dev.config.js';
+import webpackDevConfig from '@configs/webpack.dev.config.js';
 import WebSocket from 'ws';
 
 const webpackCompiler = webpack(webpackDevConfig);
@@ -37,7 +39,6 @@ const start = async () => {
         await server.listen(8080, '0.0.0.0');
     } catch (err) {
         server.log.error(err);
-        process.exit(1);
     }
 };
 

@@ -7,7 +7,10 @@
     "types": ["node", "jest"],
     "baseUrl": "../../",
     "paths": {
-      "@src/*": ["src/*"]
+      "@src/*": ["src/*"],
+      "@browser/*": ["src/browser/*"],
+      "@server/*": ["src/server/*"],
+      "@configs/*": ["build/configs/*"]
     }
   }
 }

@@ -1,6 +1,7 @@
 {
   "name": "typescript-skeleton",
   "version": "1.0.0",
+  "license": "MIT",
   "scripts": {
     "test": "jest --config build/configs/jest.config.js",
     "build:browser": "webpack --config build/configs/webpack.config.js",
@@ -10,7 +11,12 @@
     "start": "node ./dist/server/index.js",
     "start:dev": "nodemon --config build/configs/nodemon.json ./dist/server/index.js"
   },
-  "license": "MIT",
+  "_moduleAliases": {
+    "@src": "dist",
+    "@browser": "dist/browser",
+    "@server": "dist/server",
+    "@configs": "build/configs"
+  },
   "dependencies": {
     "fastify": "^2.11.0",
     "fastify-static": "^2.5.1"

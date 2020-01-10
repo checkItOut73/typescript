@@ -1,6 +1,21 @@
 describe('index | ', () => {
-    test('', () => {
+    const consoleLogBackup = console.log;
+
+    beforeAll(() => {
+        console.log = jest.fn();
+    });
+
+    afterAll(() => {
+        console.log = consoleLogBackup;
+    });
+
+    function requireModule() {
         require('../../src/browser/index.ts');
-        expect(true).toBe(true);
+    }
+
+    test('"Hello world!" is logged', () => {
+        requireModule();
+
+        expect(console.log).toHaveBeenCalledWith('Hello world!');
     });
 });
