@@ -5,7 +5,7 @@ const TSCONFIG_PATH = path.resolve(__dirname, 'tsconfig.json');
 const { compilerOptions } = require(TSCONFIG_PATH);
 
 module.exports = {
-    entry: ['./src/browser/index.tsx'],
+    entry: ['./src/browser/index.ts'],
     output: {
         path: path.resolve(process.cwd(), 'dist/browser'),
         filename: 'bundle.js'
