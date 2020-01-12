@@ -41,12 +41,6 @@ describe('index | ', () => {
         expect(moduleAliasRegisterSpy).toHaveBeenCalled();
     });
 
-    test('the webpack compiler is initialized with the webpackDevConfig', () => {
-        requireModule();
-
-        expect(webpack).toHaveBeenCalledWith(webpackDevConfig);
-    });
-
     test('fastifyStatic is registered on the server', () => {
         requireModule();
 
@@ -56,22 +50,16 @@ describe('index | ', () => {
         );
     });
 
-    describe('middleware | ', () => {
-        describe('if the server is started in production mode', () => {
-            beforeEach(() => {
-                process.env.NODE_ENV = 'production';
-            });
-
-            test('no middleware is used', () => {
-                requireModule();
-
-                expect(fastifyServerMock.use).not.toHaveBeenCalled();
-            });
-        });
-
+    describe('development | ', () => {
         describe('if the server is started in development mode', () => {
             beforeEach(() => {
                 process.env.NODE_ENV = 'development';
+            });
+
+            test('the webpack compiler is initialized with the webpackDevConfig', () => {
+                requireModule();
+
+                expect(webpack).toHaveBeenCalledWith(webpackDevConfig);
             });
 
             test('the webpack-dev-middleware is used correctly', () => {
@@ -90,34 +78,56 @@ describe('index | ', () => {
                     }
                 );
             });
-        });
-    });
 
-    describe('web socket for browser reloading | ', () => {
-        test('the web socket server is started correctly', () => {
-            requireModule();
+            test('the web socket server is started correctly', () => {
+                requireModule();
 
-            expect(WebSocket.Server).toHaveBeenCalledWith({ server: 'server' });
-        });
-
-        describe('when there is a new web socket connection', () => {
-            const webSocket = { send: jest.fn() };
-
-            beforeEach(() => {
-                webSocketServer.emit('connection', webSocket);
+                expect(WebSocket.Server).toHaveBeenCalledWith({ server: 'server' });
             });
 
-            test(
-                'a message is sent via this web socket ' +
-                'when the webpack compilation is done',
-                () => {
-                    expect(webSocket.send).not.toHaveBeenCalled();
+            describe('when there is a new web socket connection', () => {
+                const webSocket = { send: jest.fn() };
 
-                    webpackCompiler.emit('done');
+                beforeEach(() => {
+                    webSocketServer.emit('connection', webSocket);
+                });
 
-                    expect(webSocket.send).toHaveBeenCalledWith('compilationDone');
-                }
-            );
+                test(
+                    'a message is sent via this web socket ' +
+                    'when the webpack compilation is done',
+                    () => {
+                        expect(webSocket.send).not.toHaveBeenCalled();
+
+                        webpackCompiler.emit('done');
+
+                        expect(webSocket.send).toHaveBeenCalledWith('compilationDone');
+                    }
+                );
+            });
+        });
+
+        describe('if the server is started in production mode', () => {
+            beforeEach(() => {
+                process.env.NODE_ENV = 'production';
+            });
+
+            test('the webpack compiler is not initialized', () => {
+                requireModule();
+
+                expect(webpack).not.toHaveBeenCalled();
+            });
+
+            test('no middleware is used', () => {
+                requireModule();
+
+                expect(fastifyServerMock.use).not.toHaveBeenCalled();
+            });
+
+            test('the web socket server is not started', () => {
+                requireModule();
+
+                expect(WebSocket.Server).not.toHaveBeenCalled();
+            });
         });
     });
 
