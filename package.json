@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "test": "jest --config build/configs/jest.config.js",
+    "test": "jest",
     "build:browser": "webpack --config build/configs/webpack.config.js",
-    "build:server": "tsc --project build/configs/tsconfig.json",
+    "build:server": "tsc",
     "watch:server": "npm run build:server -- --watch",
-    "format": "prettier --write \"{./**/*.{json,js,jsx,ts,tsx},.prettierrc}\" --config build/configs/.prettierrc --ignore-path build/configs/.prettierignore",
+    "format": "prettier --write \"{./**/*.{json,js,jsx,ts,tsx},.prettierrc}\"",
     "start": "node ./dist/server/index.js",
-    "start:dev": "nodemon --config build/configs/nodemon.json ./dist/server/index.js"
+    "start:dev": "nodemon ./dist/server/index.js"
   },
   "_moduleAliases": {
     "@src": "dist",

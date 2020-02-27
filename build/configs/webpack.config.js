@@ -1,7 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const TSCONFIG_PATH = path.resolve(__dirname, 'tsconfig.json');
+const TSCONFIG_PATH = path.resolve(process.cwd(), 'tsconfig.json');
 const { compilerOptions } = require(TSCONFIG_PATH);
 
 module.exports = {
