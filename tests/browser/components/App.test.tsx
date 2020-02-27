@@ -1,6 +1,6 @@
 import React from 'react';
 import { create } from 'react-test-renderer';
-import App from '../../../src/browser/components/App';
+import App from '@components/App';
 
 jest.mock('react-hot-loader/root', () => ({
     hot: (App) => () => (

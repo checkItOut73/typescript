@@ -1,7 +1,6 @@
 const TESTS_DIRECTORY = 'tests';
 const COVERAGE_REPORT_DIRECTORY = '__coverage_report__';
 const TSCONFIG_PATH = require.resolve('./tsconfig');
-const JEST_PRETTIER_PATH = require.resolve('./jest.prettier.js');
 
 const { pathsToModuleNameMapper } = require('ts-jest/utils');
 const { compilerOptions } = require(TSCONFIG_PATH);
@@ -17,7 +16,6 @@ module.exports = {
             tsConfig: TSCONFIG_PATH
         }
     },
-    prettierPath: JEST_PRETTIER_PATH,
     testRegex: TESTS_DIRECTORY + '/.*\\.(jsx?|tsx?)$',
     testPathIgnorePatterns: [COVERAGE_REPORT_DIRECTORY, '__mocks__'],
     modulePaths: [process.cwd()],
