@@ -7,6 +7,7 @@
     "build:browser": "webpack --config build/configs/webpack.config.js",
     "build:server": "tsc",
     "watch:server": "npm run build:server -- --watch",
+    "copy:idea": "cpy build/configs/.idea .idea --no-overwrite",
     "format": "prettier --write \"{./**/*.{json,js,jsx,ts,tsx},.prettierrc}\"",
     "start": "node ./dist/server/index.js",
     "start:dev": "nodemon ./dist/server/index.js"
@@ -37,6 +38,7 @@
     "@types/react": "^16.9.16",
     "@types/react-dom": "^16.9.4",
     "babel-loader": "^8.0.6",
+    "cpy-cli": "^3.1.0",
     "fork-ts-checker-webpack-plugin": "^3.1.1",
     "html-webpack-plugin": "^3.2.0",
     "jest": "^24.9.0",
