@@ -1,5 +1,4 @@
 .idea/
-!build/configs/.idea/
 node_modules/
 dist/
 tests/__coverage_report__/

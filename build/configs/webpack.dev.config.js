@@ -14,4 +14,8 @@ const config = {
     }
 };
 
-module.exports = mergeOptions.call({ concatArrays: true }, webpackConfig, config);
+module.exports = mergeOptions.call(
+    { concatArrays: true },
+    webpackConfig,
+    config
+);

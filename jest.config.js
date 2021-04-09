@@ -11,11 +11,6 @@ module.exports = {
     transform: {
         '^.+\\.tsx?$': 'ts-jest'
     },
-    globals: {
-        'ts-jest': {
-            tsConfig: TSCONFIG_PATH
-        }
-    },
     testRegex: TESTS_DIRECTORY + '/.*\\.(jsx?|tsx?)$',
     testPathIgnorePatterns: [COVERAGE_REPORT_DIRECTORY, '__mocks__'],
     modulePaths: [process.cwd()],

@@ -1,9 +1,9 @@
 {
   "include": ["./src/server/**/*"],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", ".vscode"],
   "compilerOptions": {
-    "target": "ES2016",
     "outDir": "./dist/server",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "types": ["node", "jest"],
     "baseUrl": ".",
