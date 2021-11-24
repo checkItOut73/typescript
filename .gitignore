@@ -3,6 +3,3 @@
 node_modules/
 dist/
 tests/__coverage_report__/
-src/server/UseCase/GetApp/getAppAction.ts
-src/server/UseCase/GetApp/getBookJson.ts
-tests/__test_helpers__/SettablePromise.ts
