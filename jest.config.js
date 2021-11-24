@@ -13,10 +13,10 @@ module.exports = {
     },
     globals: {
         'ts-jest': {
-            tsConfig: TSCONFIG_PATH
+            tsconfig: TSCONFIG_PATH
         }
     },
-    testRegex: TESTS_DIRECTORY + '/.*\\.(jsx?|tsx?)$',
+    testRegex: TESTS_DIRECTORY + '/.*\\.test\\.(jsx?|tsx?)$',
     testPathIgnorePatterns: [COVERAGE_REPORT_DIRECTORY, '__mocks__'],
     modulePaths: [process.cwd()],
     moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),

@@ -1,5 +1,6 @@
 const fastifyServerMock = {
-    register: jest.fn(),
+    then: jest.fn(),
+    register: jest.fn(() => fastifyServerMock),
     listen: jest.fn(),
     use: jest.fn(),
     log: {

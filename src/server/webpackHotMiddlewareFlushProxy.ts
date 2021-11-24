@@ -10,11 +10,10 @@ export default function webpackHotMiddlewareFlushProxy(webpackCompiler) {
         path: HOT_MODULE_REPLACEMENT_ROUTE
     });
 
-    return (req, res, next) => {
-        if (req.url === HOT_MODULE_REPLACEMENT_ROUTE) {
+    return (request, response, next) => {
+        if (request.url === HOT_MODULE_REPLACEMENT_ROUTE) {
             setTimeout(() => {
-                console.log('####flush#####');
-                res.write(
+                response.write(
                     'data: ' +
                         JSON.stringify({
                             flush: FLUSH_STRING
@@ -24,6 +23,6 @@ export default function webpackHotMiddlewareFlushProxy(webpackCompiler) {
             }, FLUSH_TIMEOUT);
         }
 
-        return hotMiddleware(req, res, next);
+        return hotMiddleware(request, response, next);
     };
 }

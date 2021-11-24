@@ -1,1 +1,1 @@
-./build/npm.sh run test
+./build/npm.sh run test $@

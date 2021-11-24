@@ -5,10 +5,11 @@
     "outDir": "./dist/server",
     "jsx": "react",
     "esModuleInterop": true,
-    "types": ["node", "jest", "react", "react-dom"],
+    "types": ["node", "jest", "react", "react-dom", "webpack", "webpack-dev-middleware", "webpack-hot-middleware", "./tests/__types__"],
     "baseUrl": ".",
     "paths": {
       "@src/*": ["src/*"],
+      "@tests/*": ["tests/*"],
       "@browser/*": ["src/browser/*"],
       "@server/*": ["src/server/*"],
       "@components/*": ["src/browser/components/*"],

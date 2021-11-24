@@ -1,18 +1,23 @@
 import fastify from 'fastify';
 import path from 'path';
 import webpack from 'webpack';
+import { FastifyInstanceWithUse } from '@server/types/FastifyInstaceWithUse';
 
 const moduleAliasRegisterSpy = jest.fn();
-const fastifyServerMock = fastify();
+const fastifyServerMock: Mock<
+    FastifyInstanceWithUse & { then: (cb: Function) => void }
+> = fastify();
+
 const fastifyStaticMock = {};
-const webpackCompiler = webpack();
+const middieMock = {};
+const webpackCompiler = webpack({});
 const webpackDevMiddlewareMock = (webpackCompiler, options) => ({
     middleware: 'webpack-dev-middleware',
     webpackCompiler,
     options
 });
-const webpackHotMiddlewareMock = (webpackCompiler) => ({
-    middleware: 'webpack-hot-middleware',
+const webpackHotMiddlewareFlushProxyMock = (webpackCompiler) => ({
+    middleware: 'webpackHotMiddlewareFlushProxyMock',
     webpackCompiler
 });
 const webpackDevConfig = {
@@ -24,9 +29,13 @@ const webpackDevConfig = {
 
 jest.mock('fastify');
 jest.mock('fastify-static', () => fastifyStaticMock);
+jest.mock('middie', () => middieMock);
 jest.mock('webpack');
 jest.mock('webpack-dev-middleware', () => webpackDevMiddlewareMock);
-jest.mock('webpack-hot-middleware', () => webpackHotMiddlewareMock);
+jest.mock(
+    '@server/webpackHotMiddlewareFlushProxy',
+    () => webpackHotMiddlewareFlushProxyMock
+);
 jest.mock('@configs/webpack.dev.config.js', () => webpackDevConfig);
 jest.mock('module-alias/register', () => moduleAliasRegisterSpy());
 
@@ -64,38 +73,53 @@ describe('index | ', () => {
                 expect(webpack).toHaveBeenCalledWith(webpackDevConfig);
             });
 
-            test('the webpack-dev-middleware is used correctly', () => {
+            test('middie is registered on the server', () => {
                 requireModule();
 
-                expect(fastifyServerMock.use).toHaveBeenCalledWith(
-                    {
-                        middleware: 'webpack-dev-middleware',
-                        webpackCompiler,
-                        options: {
-                            noInfo: true,
-                            publicPath: 'http://localhost',
-                            watchOptions: 'watchOptions',
-                            writeToDisk: false
-                        }
-                    }
+                expect(fastifyServerMock.register).toHaveBeenCalledWith(
+                    middieMock
                 );
             });
 
-            test('the webpack-hot-middleware is used correctly', () => {
-                requireModule();
+            describe('after middie registration has resolved', () => {
+                beforeEach(async () => {
+                    requireModule();
+                    await Promise.resolve(true);
 
-                expect(fastifyServerMock.use).toHaveBeenCalledWith(
-                    {
-                        middleware: 'webpack-hot-middleware',
+                    fastifyServerMock.then.mock.calls[0][0]();
+                });
+
+                test('the webpack-dev-middleware is used correctly', () => {
+                    expect(fastifyServerMock.use).toHaveBeenCalledWith({
+                        middleware: 'webpack-dev-middleware',
+                        webpackCompiler,
+                        options: {
+                            publicPath: 'http://localhost',
+                            writeToDisk: false
+                        }
+                    });
+                });
+
+                test('the webpackHotMiddlewareFlushProxyMock is used correctly', () => {
+                    expect(fastifyServerMock.use).toHaveBeenCalledWith({
+                        middleware: 'webpackHotMiddlewareFlushProxyMock',
                         webpackCompiler
-                    }
-                );
+                    });
+                });
             });
         });
 
         describe('if the server is started in production mode', () => {
-            beforeEach(() => {
+            beforeEach(async () => {
                 process.env.NODE_ENV = 'production';
+            });
+
+            test('middie is not registered on the server', () => {
+                requireModule();
+
+                expect(fastifyServerMock.register).not.toHaveBeenCalledWith(
+                    middieMock
+                );
             });
 
             test('the webpack compiler is not initialized', () => {
@@ -116,13 +140,15 @@ describe('index | ', () => {
         test('the server listens', () => {
             requireModule();
 
-            expect(fastifyServerMock.listen).toHaveBeenCalledWith(8080, '0.0.0.0');
+            expect(fastifyServerMock.listen).toHaveBeenCalledWith(
+                8080,
+                '0.0.0.0'
+            );
         });
 
         describe('if listen resolves ', () => {
             beforeEach(() => {
-                // @ts-ignore
-                fastifyServerMock.listen.mockReturnValue(Promise.resolve());
+                fastifyServerMock.listen.mockReturnValue(Promise.resolve(''));
             });
 
             test('no error is logged', () => {
@@ -136,7 +162,6 @@ describe('index | ', () => {
             const error = new Error('listen error');
 
             beforeEach(() => {
-                // @ts-ignore
                 fastifyServerMock.listen.mockReturnValue(Promise.reject(error));
             });
 
@@ -144,7 +169,9 @@ describe('index | ', () => {
                 requireModule();
 
                 setImmediate(() => {
-                    expect(fastifyServerMock.log.error).toHaveBeenCalledWith(error);
+                    expect(fastifyServerMock.log.error).toHaveBeenCalledWith(
+                        error
+                    );
                     done();
                 });
             });

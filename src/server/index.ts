@@ -5,11 +5,12 @@ import fastify from 'fastify';
 import fastifyStatic from 'fastify-static';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddlewareFlushProxy from './webpackHotMiddlewareFlushProxy';
+import webpackHotMiddlewareFlushProxy from '@server/webpackHotMiddlewareFlushProxy';
 import webpackDevConfig from '@configs/webpack.dev.config.js';
+import { FastifyInstanceWithUse } from '@server/types/FastifyInstaceWithUse';
 
 (async function () {
-    const server = fastify();
+    const server: FastifyInstanceWithUse = fastify();
 
     server.register(fastifyStatic, {
         root: path.resolve(process.cwd(), 'dist/browser')
@@ -20,7 +21,6 @@ import webpackDevConfig from '@configs/webpack.dev.config.js';
 
         await server.register(require('middie'));
 
-        // @ts-ignore
         server.use(
             webpackDevMiddleware(webpackCompiler, {
                 publicPath: new URL(webpackDevConfig.output.publicPath).origin,
@@ -28,7 +28,6 @@ import webpackDevConfig from '@configs/webpack.dev.config.js';
             })
         );
 
-        // @ts-ignore
         server.use(webpackHotMiddlewareFlushProxy(webpackCompiler));
     }
 

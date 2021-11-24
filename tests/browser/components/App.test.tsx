@@ -3,11 +3,12 @@ import { create } from 'react-test-renderer';
 import App from '@components/App';
 
 jest.mock('react-hot-loader/root', () => ({
-    hot: (App) => () => (
-        <div data-hot-loaded>
-            <App />
-        </div>
-    )
+    hot: (App) => () =>
+        (
+            <div data-hot-loaded>
+                <App />
+            </div>
+        )
 }));
 
 describe('<App />', () => {
@@ -25,7 +26,10 @@ describe('<App />', () => {
               data-hot-loaded={true}
             >
               <h1>
-                hello world
+                hello world ! 
+                <span>
+                  123
+                </span>
               </h1>
             </div>
         `);
