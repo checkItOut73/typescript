@@ -6,8 +6,8 @@ const config = {
     entry: ['webpack-hot-middleware/client'],
     output: {
         publicPath: 'http://docker-vm:8080/',
-        hotUpdateChunkFilename: 'hot_update/[id].[hash].hot-update.js',
-        hotUpdateMainFilename: 'hot_update/[hash].hot-update.json'
+        hotUpdateChunkFilename: 'hot_update/[id].[fullhash].hot-update.js',
+        hotUpdateMainFilename: 'hot_update/[fullhash].hot-update.json'
     },
     resolve: {
         alias: {

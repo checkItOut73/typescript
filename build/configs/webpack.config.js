@@ -52,7 +52,9 @@ module.exports = {
     },
     plugins: [
         new ForkTsCheckerWebpackPlugin({
-            tsconfig: TSCONFIG_PATH
+            typescript: {
+                configFile: TSCONFIG_PATH
+            }
         }),
         new HtmlWebpackPlugin({
             template: 'src/browser/index.html',
