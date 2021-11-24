@@ -5,7 +5,7 @@
     "outDir": "./dist/server",
     "jsx": "react",
     "esModuleInterop": true,
-    "types": ["node", "jest", "react", "react-dom", "webpack", "webpack-dev-middleware", "webpack-hot-middleware", "./tests/__types__"],
+    "types": ["node", "jest", "react", "react-dom", "webpack", "webpack-dev-middleware", "webpack-hot-middleware"],
     "baseUrl": ".",
     "paths": {
       "@src/*": ["src/*"],

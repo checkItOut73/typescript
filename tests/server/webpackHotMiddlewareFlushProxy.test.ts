@@ -2,6 +2,7 @@ import webpack from 'webpack';
 import webpackHotMiddlewareFlushProxy from '@server/webpackHotMiddlewareFlushProxy';
 import webpackHotMiddleware, { EventStream } from 'webpack-hot-middleware';
 import { NextHandleFunction } from 'connect';
+import { MockFunction } from '@tests/__types__/MockFunction';
 
 jest.mock('webpack-hot-middleware');
 jest.useFakeTimers();

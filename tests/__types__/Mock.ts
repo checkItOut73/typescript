@@ -5,7 +5,7 @@ type SubType<Type, Condition> = Pick<
     }[keyof Type]
 >;
 
-declare type Mock<Type> = {
+export type Mock<Type> = {
     [key in keyof SubType<Type, Function>]?: Type[key] & {
         mockReturnValue?: (returnValue: ReturnType<Type[key]>) => void;
         mockImplementation?: (implementation: Type[key]) => void;

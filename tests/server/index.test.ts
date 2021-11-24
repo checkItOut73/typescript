@@ -2,6 +2,7 @@ import fastify from 'fastify';
 import path from 'path';
 import webpack from 'webpack';
 import { FastifyInstanceWithUse } from '@server/types/FastifyInstaceWithUse';
+import { Mock } from '@tests/__types__/Mock';
 
 const moduleAliasRegisterSpy = jest.fn();
 const fastifyServerMock: Mock<
